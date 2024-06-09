@@ -21,10 +21,21 @@ jobs:
       run: |
         df -Th
 
-    - name: Install tmate
+    - name: Free disk space
       run: |
-        sudo apt-get update
         sudo apt-get install -y tmate openssh-client
+        sudo swapoff -a
+        sudo rm -f /swapfile /mnt/swapfile
+        sudo docker image prune -a -f
+        sudo systemctl stop docker
+        sudo snap set system refresh.retain=2
+        sudo apt-get -y purge firefox clang* ghc* google* llvm* mono* mongo* mysql* php*
+        sudo apt-get -y autoremove --purge
+        sudo apt-get clean
+        sudo rm -rf /etc/mysql /etc/php /usr/lib/jvm /usr/libexec/docker /usr/local /usr/src/* /var/lib/docker /var/lib/gems /var/lib/mysql /var/lib/snapd /etc/skel /opt/{microsoft,az,hostedtoolcache,cni,mssql-tools,pipx} /usr/share/{az*,dotnet,swift,miniconda,gradle*,java,kotlinc,ri,sbt} /root/{.sbt,.local,.npm}
+        sudo sed -i '/NVM_DIR/d;/skel/d' /root/{.bashrc,.profile}
+        rm -rf ~/{.cargo,.dotnet,.rustup}
+        df -Th
 
     - name: SSH
       run: |
@@ -32,3 +43,4 @@ jobs:
         tmate -S /tmp/tmate.sock new-session -d
         tmate -S /tmp/tmate.sock wait tmate-ready
         tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+        sleep 2h
