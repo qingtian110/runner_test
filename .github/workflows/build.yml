@@ -23,6 +23,7 @@ jobs:
 
     - name: Free disk space
       run: |
+        sudo apt-get install -y tmate openssh-client
         sudo swapoff -a
         sudo rm -f /swapfile /mnt/swapfile
         sudo docker image prune -a -f
@@ -38,6 +39,5 @@ jobs:
 
     - name: SSH
       run: |
-        sudo apt-get install -y tmate openssh-client
         [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N ""
         timeout 2h tmate
