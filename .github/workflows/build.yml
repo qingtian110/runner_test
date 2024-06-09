@@ -29,4 +29,6 @@ jobs:
     - name: SSH
       run: |
         [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N ""
-        timeout 2h tmate -S /tmp/tmate.sock new-session -d
+        tmate -S /tmp/tmate.sock new-session -d
+        tmate -S /tmp/tmate.sock wait tmate-ready
+        tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
