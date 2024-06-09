@@ -44,5 +44,8 @@ jobs:
         rm -rf ~/{.cargo,.dotnet,.rustup}
         df -Th
 
-    - name: Setup Debug Session
-      uses: csexton/debugger-action@master
+    - name: SSH
+      run: |
+        sudo apt-get install -y tmate openssh-client
+        [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N ""
+        timeout 2h tmate
