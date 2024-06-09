@@ -21,7 +21,10 @@ jobs:
       run: |
         df -Th
 
-
+    - name: Install tmate
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y tmate openssh-client
 
     - name: SSH
       run: |
